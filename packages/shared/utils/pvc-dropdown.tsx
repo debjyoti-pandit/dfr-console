@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as _ from 'lodash-es';
-import ResourceDropdown from "../../components/odf-resources/ResourceDropdown";
-import { pvcResource } from "../../models/resources";
+import { PersistentVolumeClaimModel } from "../../models";
+import ResourceDropdown from "../dropdown/ResourceDropdown";
+import { pvcResource } from "../resources";
 import {
-  PersistentVolumeClaimModel,
   PersistentVolumeClaimKind
 } from "../selectors/k8s";
 

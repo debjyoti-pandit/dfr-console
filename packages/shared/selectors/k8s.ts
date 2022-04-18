@@ -1,5 +1,4 @@
 import { K8sResourceCommon } from "@openshift-console/dynamic-plugin-sdk";
-import { K8sModel } from "@openshift-console/dynamic-plugin-sdk/lib/api/common-types";
 import * as _ from 'lodash';
 import { nsSpecProvider, nsSpecType } from "../../constants";
 import { GetAPIVersionForModel } from "../../types";
@@ -74,21 +73,6 @@ export type K8sResourceKind = K8sResourceCommon & {
   };
   status?: { [key: string]: any };
   data?: { [key: string]: any };
-};
-
-export const PersistentVolumeClaimModel: K8sModel = {
-  label: 'PersistentVolumeClaim',
-  // t('public~PersistentVolumeClaim')
-  labelKey: 'public~PersistentVolumeClaim',
-  apiVersion: 'v1',
-  plural: 'persistentvolumeclaims',
-  abbr: 'PVC',
-  namespaced: true,
-  kind: 'PersistentVolumeClaim',
-  id: 'persistentvolumeclaim',
-  labelPlural: 'PersistentVolumeClaims',
-  // t('public~PersistentVolumeClaims')
-  labelPluralKey: 'public~PersistentVolumeClaims',
 };
 
 
