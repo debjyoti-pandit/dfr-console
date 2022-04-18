@@ -4,4 +4,3 @@ export enum StoreType {
   BS = 'BackingStore',
   NS = 'NamespaceStore',
 }
-

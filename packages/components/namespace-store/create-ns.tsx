@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
 import "../noobaa-provider-endpoints/noobaa-provider-endpoints.scss";
 import { Title } from "@patternfly/react-core";
-import { CEPH_STORAGE_NAMESPACE, ODF_MODEL_FLAG } from "../../constants/index";
+import { CEPH_STORAGE_NAMESPACE, ODF_MODEL_FLAG } from "../../constants";
 import { NooBaaNamespaceStoreModel } from "../../models";
 import { getName } from "../../shared/selectors/k8s";
 import { referenceForModel } from "../../shared/utils/common";

@@ -1,6 +1,6 @@
 import { WatchK8sResource } from "@openshift-console/dynamic-plugin-sdk";
-import { CEPH_STORAGE_NAMESPACE } from "../constants/common";
-import { PersistentVolumeClaimModel, SecretModel } from ".";
+import { CEPH_STORAGE_NAMESPACE } from "../constants";
+import { PersistentVolumeClaimModel, SecretModel } from "../models";
 
 export const secretResource: WatchK8sResource = {
   isList: true,

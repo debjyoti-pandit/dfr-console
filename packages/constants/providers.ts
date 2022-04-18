@@ -13,7 +13,6 @@ export enum BC_PROVIDERS {
   FILESYSTEM = 'Filesystem',
 }
 
-
 export const AWS_REGIONS = [
   'us-east-1',
   'us-east-2',

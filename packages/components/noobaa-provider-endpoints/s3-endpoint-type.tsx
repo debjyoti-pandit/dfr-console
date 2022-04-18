@@ -9,18 +9,18 @@ import {
   InputGroup,
   SelectOption
 } from "@patternfly/react-core";
-import { StoreType } from "../../constants/common";
-import { BC_PROVIDERS, AWS_REGIONS } from "../../constants/providers";
-import { SecretModel } from "../../models/index";
-import { secretResource } from "../../models/resources";
+import { StoreType } from "../../constants";
+import { BC_PROVIDERS, AWS_REGIONS } from "../../constants";
+import { SecretModel } from "../../models";
+import ResourceDropdown from "../../shared/dropdown/ResourceDropdown";
+import { SingleSelectDropdown } from "../../shared/dropdown/singleselectdropdown";
+import { secretResource } from "../../shared/resources";
 import {
   endpointsSupported,
   awsRegionItems
 } from "../../shared/utils/noobaa-utils";
 import { ProviderDataState, StoreAction } from "../namespace-store/reducer";
 import "./noobaa-provider-endpoints.scss";
-import ResourceDropdown from "../odf-resources/ResourceDropdown";
-import { SingleSelectDropdown } from "../odf-resources/singleselectdropdown";
 
 type S3EndpointTypeProps = {
   type: StoreType;
