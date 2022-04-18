@@ -13,17 +13,16 @@ import {
   ActionGroup,
   Button
 } from "@patternfly/react-core";
-import { StoreType } from "../../constants/common";
-import {
-  NOOBAA_TYPE_MAP,
-  PROVIDERS_NOOBAA_MAP,
-  secretPayloadCreator
-} from "../../constants/noobaa";
 import {
   BC_PROVIDERS,
-  BUCKET_LABEL_NOOBAA_MAP
-} from "../../constants/providers";
-import { NooBaaNamespaceStoreModel, SecretModel } from "../../models";
+  BUCKET_LABEL_NOOBAA_MAP,
+  NOOBAA_TYPE_MAP,
+  PROVIDERS_NOOBAA_MAP,
+  secretPayloadCreator, StoreType
+} from "../../constants";
+import { SecretModel, NooBaaNamespaceStoreModel } from "../../models";
+import { SingleSelectDropdown } from "../../shared/dropdown/singleselectdropdown";
+import { ButtonBar } from "../../shared/generics/ButtonBar";
 import {
   HandlePromiseProps,
   withHandlePromise
@@ -42,8 +41,6 @@ import {
 import { PVCDropdown } from "../../shared/utils/pvc-dropdown";
 import { Payload } from "../../types";
 import { S3EndPointType } from "../noobaa-provider-endpoints/s3-endpoint-type";
-import { ButtonBar } from "../odf-resources/ButtonBar";
-import { SingleSelectDropdown } from "../odf-resources/singleselectdropdown";
 import { initialState, providerDataReducer } from "./reducer";
 
 const PROVIDERS = getProviders(StoreType.NS);

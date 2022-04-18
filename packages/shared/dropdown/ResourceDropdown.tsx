@@ -4,7 +4,7 @@ import {
   useK8sWatchResources,
   WatchK8sResource,
 } from '@openshift-console/dynamic-plugin-sdk';
-import { K8sModel } from '@openshift-console/dynamic-plugin-sdk-internal-kubevirt/lib/api/common-types';
+import { K8sModel } from '@openshift-console/dynamic-plugin-sdk/lib/api/common-types';
 import classNames from 'classnames';
 import * as fuzzy from 'fuzzysearch';
 import * as _ from 'lodash';
@@ -17,7 +17,7 @@ import {
 } from '@patternfly/react-core';
 import { CaretDownIcon } from '@patternfly/react-icons';
 import { getName, getUID } from '../../shared/selectors/k8s';
-import { LoadingInline } from '../odf-resources/Loading';
+import { LoadingInline } from '../generics/Loading';
 import './resourceDropdown.scss';
 
 const filterName = (searchText: string, resourceName: string) =>

@@ -1,6 +1,4 @@
 import * as _ from "lodash";
-import { SecretModel } from "../models";
-import { getAPIVersion } from "../shared/selectors/common";
 import { BC_PROVIDERS } from "./providers";
 
 export const PROVIDERS_NOOBAA_MAP = {
@@ -40,46 +38,10 @@ export const NS_NOOBAA_TYPE_MAP = _.pick(
   BC_PROVIDERS.IBM,
 );
 
-export type nsSpecProvider = typeof NS_PROVIDERS_NOOBAA_MAP[keyof typeof NS_PROVIDERS_NOOBAA_MAP];
-export type nsSpecType = typeof NS_NOOBAA_TYPE_MAP[keyof typeof NS_NOOBAA_TYPE_MAP];
-
-export const secretPayloadCreator = (
-  provider: string,
-  namespace: string,
-  secretName: string,
-  field1: string,
-  field2 = '',
-) => {
-  const payload = {
-    apiVersion: getAPIVersion(SecretModel),
-    kind: SecretModel.kind,
-    stringData: {},
-    metadata: {
-      name: secretName,
-      namespace,
-    },
-    type: 'Opaque',
-  };
-
-  switch (provider) {
-    case BC_PROVIDERS.AZURE:
-      payload.stringData = {
-        AccountName: field1,
-        AccountKey: field2,
-      };
-      break;
-    case BC_PROVIDERS.IBM:
-      payload.stringData = {
-        IBM_COS_ACCESS_KEY_ID: field1,
-        IBM_COS_SECRET_ACCESS_KEY: field2,
-      };
-      break;
-    default:
-      payload.stringData = {
-        AWS_ACCESS_KEY_ID: field1,
-        AWS_SECRET_ACCESS_KEY: field2,
-      };
-      break;
-  }
-  return payload;
+export const BUCKET_LABEL_NOOBAA_MAP = {
+  [BC_PROVIDERS.AWS]: 'targetBucket',
+  [BC_PROVIDERS.S3]: 'targetBucket',
+  [BC_PROVIDERS.AZURE]: 'targetBlobContainer',
+  [BC_PROVIDERS.GCP]: 'targetBucket',
+  [BC_PROVIDERS.IBM]: 'targetBucket',
 };
