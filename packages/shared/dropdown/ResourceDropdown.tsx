@@ -16,8 +16,8 @@ import {
   TextInput,
 } from '@patternfly/react-core';
 import { CaretDownIcon } from '@patternfly/react-icons';
-import { getName, getUID } from '../../shared/selectors/k8s';
 import { LoadingInline } from '../generics/Loading';
+import { getName, getUID } from '../selectors/k8s';
 import './resourceDropdown.scss';
 
 const filterName = (searchText: string, resourceName: string) =>

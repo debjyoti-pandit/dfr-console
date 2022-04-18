@@ -1,6 +1,6 @@
 import * as _ from "lodash";
-import { StoreType } from "../../constants/common";
-import { BC_PROVIDERS, AWS_REGIONS } from "../../constants/providers";
+import { StoreType } from "../../constants";
+import { BC_PROVIDERS, AWS_REGIONS } from "../../constants";
 
 export const awsRegionItems = _.zipObject(AWS_REGIONS, AWS_REGIONS);
 export const endpointsSupported = [BC_PROVIDERS.S3, BC_PROVIDERS.IBM];
