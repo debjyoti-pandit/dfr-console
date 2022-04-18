@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as _ from 'lodash-es';
 import { PersistentVolumeClaimModel } from "../../models";
-import ResourceDropdown from "../dropdown/ResourceDropdown";
 import { pvcResource } from "../resources";
 import {
   PersistentVolumeClaimKind
 } from "../selectors/k8s";
+import ResourceDropdown from "./ResourceDropdown";
 
 export const PVCDropdown: React.FC<PVCDropdownProps> = (props) => {
   const { onChange } = props;

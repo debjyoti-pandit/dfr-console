@@ -21,6 +21,7 @@ import {
   secretPayloadCreator, StoreType
 } from "../../constants";
 import { SecretModel, NooBaaNamespaceStoreModel } from "../../models";
+import { PVCDropdown } from "../../shared/dropdown/pvc-dropdown";
 import { SingleSelectDropdown } from "../../shared/dropdown/singleselectdropdown";
 import { ButtonBar } from "../../shared/generics/ButtonBar";
 import {
@@ -38,7 +39,6 @@ import {
   getExternalProviders,
   getProviders
 } from "../../shared/utils/noobaa-utils";
-import { PVCDropdown } from "../../shared/utils/pvc-dropdown";
 import { Payload } from "../../types";
 import { S3EndPointType } from "../noobaa-provider-endpoints/s3-endpoint-type";
 import { initialState, providerDataReducer } from "./reducer";
