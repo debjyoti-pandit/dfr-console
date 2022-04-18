@@ -1,5 +1,13 @@
 {
   "Data Federation": "Data Federation",
   "Overview": "Overview",
-  "Create {{kind}}": "Create {{kind}}"
+  "Create {{kind}}": "Create {{kind}}",
+  "All": "All",
+  "SSD / NVMe": "SSD / NVMe",
+  "HDD": "HDD",
+  "Error Loading": "Error Loading",
+  "Select input": "Select input",
+  "Select options": "Select options",
+  "No results found": "No results found",
+  "An error occurred": "An error occurred"
 }
