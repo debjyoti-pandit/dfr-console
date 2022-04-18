@@ -9,7 +9,7 @@ export const SingleSelectDropdown: React.FC<SingleSelectDropdownProps> = ({
   valueLabelMap,
   ...props
 }) => {
-  const { t } = useTranslation('plugin__odf-console');
+  const { t } = useTranslation('plugin__dfr-console');
 
   const [isOpen, setOpen] = React.useState(false);
   const onSelect = React.useCallback((event: React.MouseEvent | React.ChangeEvent, selection: string) => {

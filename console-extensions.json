@@ -5,7 +5,6 @@
       "id": "dfr-data-services",
       "perspective": "admin",
       "name": "%plugin__dfr-plugin~Data Services%",
-      /*ToDo: check why section is not getting added before storage*/
       "insertBefore": "storage"
     }
   },

@@ -126,7 +126,7 @@ const ResourceDropdown: ResourceDropdown = <T extends unknown>({
   const [selectedItem, setSelectedItem] = React.useState(null);
   const [searchText, setSearchText] = React.useState('');
 
-  const { t } = useTranslation('plugin__odf-console');
+  const { t } = useTranslation('plugin__dfr-console');
 
   const [resources, loaded, loadError] =
     useK8sWatchResource<T[]>(watchResource);
@@ -272,7 +272,7 @@ export const ResourcesDropdown: ResourcesDropdown = <T extends unknown>({
   const [selectedItem, setSelectedItem] = React.useState(null);
   const [searchText, setSearchText] = React.useState('');
 
-  const { t } = useTranslation('plugin__odf-console');
+  const { t } = useTranslation('plugin__dfr-console');
 
   const resourcesObj: ResourcesObject<T> = useK8sWatchResources(watchResources);
 

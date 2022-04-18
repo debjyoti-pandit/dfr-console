@@ -15,7 +15,7 @@ const injectDisabled = (children: React.ReactChild, disabled) => {
 };
 
 const ErrorMessage = ({ message }) => {
-  const { t } = useTranslation('plugin__odf-console');
+  const { t } = useTranslation('plugin__dfr-console');
   return (
     <Alert
       isInline
