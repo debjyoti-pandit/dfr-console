@@ -19,3 +19,6 @@ After the OCP console is set as required by Data Federation console. Performs th
 2. Pull all required dependencies by running `yarn install`.
 3. `yarn build` to build the plugin, generating output to `dist` directory.
 4. `yarn http-server` to start an HTTP server hosting the generated assets, or, run the development mode of dfr-console using `yarn run dev`. This runs a webserver in port 9002.
+
+THIS IS A BACKUP OF THE NAMESPACE CREATION FORM. IT DOESN'T CONTAINS CHANGES RELATED TO I18N and EXTRA LINE.
+COMMAND TO SQUASH - git reset --soft HEAD~3 && git commit
