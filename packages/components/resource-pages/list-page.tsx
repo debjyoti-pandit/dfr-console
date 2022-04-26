@@ -22,6 +22,7 @@ import { sortable } from "@patternfly/react-table";
 import { DATA_FEDERATION_NAMESPACE } from "../../constants";
 import {
   NooBaaBackingStoreModel,
+  NooBaaBucketClassModel,
   NooBaaNamespaceStoreModel
 } from "../../models";
 import { LabelList } from "../../shared/details-page/label-list";
@@ -143,7 +144,7 @@ const RowRenderer: React.FC<RowProps<K8sResourceCommon, CustomData>> = ({
 }) => {
   const { resourceModel, launchModal, kebabActions } = rowData;
   const name = getName(obj);
-  const path = `/odf/resource/${referenceForModel(resourceModel)}/${name}`;
+  const path = `/dfr/resource/${referenceForModel(resourceModel)}/${name}`;
   return (
     <>
       <TableData {...tableColumnInfo[0]} activeColumnIDs={activeColumnIDs}>
@@ -204,7 +205,7 @@ const GenericListPage: React.FC<GenericListPageProps> = ({
 
   const [data, filteredData, onFilterChange] = useListPageFilter(resources);
 
-  const createLink = `/odf/resource/${referenceForModel(
+  const createLink = `/dfr/resource/${referenceForModel(
     resourceModel
   )}/create/~new`;
 
@@ -241,4 +242,8 @@ export const NamespaceStoreListPage: React.FC = () => (
 
 export const BackingStoreListPage: React.FC = () => (
   <GenericListPage resourceModel={NooBaaBackingStoreModel} />
+);
+
+export const BucketClassListPage: React.FC = () => (
+  <GenericListPage resourceModel={NooBaaBucketClassModel} />
 );
