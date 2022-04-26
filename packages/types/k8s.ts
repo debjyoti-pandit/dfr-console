@@ -35,6 +35,12 @@ export type PersistentVolumeClaimKind = K8sResourceCommon & {
   };
 };
 
+export type Patch = {
+  op: string;
+  path: string;
+  value?: any;
+};
+
 export type SecretKind = {
   data?: { [key: string]: string };
   stringData?: { [key: string]: string };
