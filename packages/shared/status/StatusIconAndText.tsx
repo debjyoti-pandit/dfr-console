@@ -1,8 +1,8 @@
-import * as React from 'react';
-import classNames from 'classnames';
-import { DASH } from '../constants';
-import { CamelCaseWrap } from '../utils/CamelCaseWrap';
-import { StatusComponentProps } from './types';
+import * as React from "react";
+import classNames from "classnames";
+import { DASH } from "../../constants";
+import { CamelCaseWrap } from "../../utils/CamelCaseWrap";
+import { StatusComponentProps } from "./types";
 
 type StatusIconAndTextProps = StatusComponentProps & {
   icon?: React.ReactElement;
@@ -15,7 +15,7 @@ const StatusIconAndText: React.FC<StatusIconAndTextProps> = ({
   spin,
   iconOnly,
   noTooltip,
-  className,
+  className
 }) => {
   if (!title) {
     return <>{DASH}</>;
@@ -23,16 +23,16 @@ const StatusIconAndText: React.FC<StatusIconAndTextProps> = ({
 
   return (
     <span
-      className={classNames('co-icon-and-text', className)}
+      className={classNames("co-icon-and-text", className)}
       title={iconOnly && !noTooltip ? title : undefined}
     >
       {icon &&
         React.cloneElement(icon, {
           className: classNames(
-            spin && 'fa-spin',
+            spin && "fa-spin",
             icon.props.className,
-            !iconOnly && 'co-icon-and-text__icon co-icon-flex-child'
-          ),
+            !iconOnly && "co-icon-and-text__icon co-icon-flex-child"
+          )
         })}
       {!iconOnly && <CamelCaseWrap value={title} dataTest="status-text" />}
     </span>

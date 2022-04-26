@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { Status } from '../shared/status/Status';
 import { SuccessStatus } from '../shared/status/statuses';
-import { K8sResourceCondition, K8sResourceKind } from '../shared/types';
+import { K8sResourceCondition, K8sResourceKind } from '../types';
 
 type OperandStatusType = {
   type: string;

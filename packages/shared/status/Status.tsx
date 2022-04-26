@@ -9,7 +9,7 @@ import {
   SyncAltIcon,
   UnknownIcon,
 } from '@patternfly/react-icons';
-import { DASH } from '../constants';
+import { DASH } from '../../constants';
 import { YellowExclamationTriangleIcon } from './icons';
 import {
   ErrorStatus,
