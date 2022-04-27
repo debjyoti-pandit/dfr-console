@@ -55,7 +55,7 @@ export const Kebab: React.FC<KebabProps> = ({
   toggleType = 'Kebab',
   isDisabled,
 }) => {
-  const { t } = useTranslation('plugin__odf-console');
+  const { t } = useTranslation();
 
   const [isOpen, setOpen] = React.useState(false);
 
