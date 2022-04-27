@@ -34,6 +34,7 @@ import {
   useModalLauncher
 } from "../../shared/modals/modalLauncher";
 import ResourceLink from "../../shared/resource-link/resource-link";
+import { NamespaceStoreKind } from "../../types";
 import { referenceForModel } from "../../utils";
 import { OperandStatus } from "../../utils";
 import { getName } from "../../utils/selectors";
@@ -199,12 +200,14 @@ const GenericListPage: React.FC<GenericListPageProps> = ({
     }),
     [resourceModel]
   );
-
   const [resources, loaded, loadError] =
     useK8sWatchResource<K8sResourceCommon[]>(resource);
-
   const [data, filteredData, onFilterChange] = useListPageFilter(resources);
-
+  const new_filtered_array = (filteredData as NamespaceStoreKind[]).filter(
+    (a) => {
+      return a.metadata.namespace === DATA_FEDERATION_NAMESPACE;
+    }
+  );
   const createLink = `/dfr/resource/${referenceForModel(
     resourceModel
   )}/create/~new`;
@@ -225,7 +228,7 @@ const GenericListPage: React.FC<GenericListPageProps> = ({
           hideColumnManagement={true}
         />
         <ResourceTable
-          data={filteredData}
+          data={new_filtered_array}
           unfilteredData={data}
           loaded={loaded}
           loadError={loadError}
