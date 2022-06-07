@@ -47,6 +47,34 @@ import {
 import './inventory-card.scss';
 
 type obcType = { name: string; ns: string };
+type displayItems = {
+  statusMap: { [key: string]: number };
+  errorList: string[] | obcType[];
+  processingList: string[] | obcType[];
+};
+
+const getHeaderHTMLElement = (
+  popUpType: PhaseType,
+  headerText: string
+): React.ReactNode => {
+  if (popUpType === PhaseType.ERROR) {
+    return (
+      <>
+        <RedExclamationCircleIcon className="popup-header-icon" />
+        {headerText}
+      </>
+    );
+  }
+  if (popUpType === PhaseType.PROCESSING) {
+    return (
+      <>
+        <BlueInProgressIcon className="popup-header-icon" />
+        {headerText}
+      </>
+    );
+  }
+  return <></>;
+};
 
 export const InventoryCard: React.FC = () => {
   const { t } = useTranslation();
@@ -56,87 +84,72 @@ export const InventoryCard: React.FC = () => {
     useK8sWatchResource<NamespaceStoreKind[]>(nameSpaceStoreResource);
   const [obc, obcLoaded, obcError] =
     useK8sWatchResource<K8sResourceKind[]>(bucketClaimResource);
-  const dataResourceErrorList = React.useMemo((): string[] => [], []);
-  const dataResourceProcessingList = React.useMemo((): string[] => [], []);
-  const bucketClassErrorList = React.useMemo((): string[] => [], []);
-  const bucketClassProcessingList = React.useMemo((): string[] => [], []);
-  const obcErrorList = React.useMemo((): [obcType] => [{} as obcType], []);
-  const obcProcessingList = React.useMemo((): [obcType] => [{} as obcType], []);
 
-  const getHeaderHTMLElement = (
-    popUpType: PhaseType,
-    headerText: string
-  ): React.ReactNode => {
-    if (popUpType === PhaseType.ERROR) {
-      return (
-        <>
-          <RedExclamationCircleIcon className="popup-header-icon" />
-          {headerText}
-        </>
-      );
-    }
-    if (popUpType === PhaseType.PROCESSING) {
-      return (
-        <>
-          <BlueInProgressIcon className="popup-header-icon" />
-          {headerText}
-        </>
-      );
-    }
-    return <></>;
-  };
-
-  const bucketStatusMap: { [key: string]: number } = React.useMemo(
-    () =>
+  const {
+    statusMap: bucketStatusMap,
+    errorList: bucketClassErrorList,
+    processingList: bucketClassProcessingList,
+  } = React.useMemo((): displayItems => {
+    const errorList = [];
+    const processingList = [];
+    const statusMap =
       bucketsLoaded && !bucketsError
         ? buckets?.reduce((bucketMap, bc) => {
             const bucketStatus = BucketClassPhaseMap[bc?.status?.phase];
             const bucketClassName = bc?.metadata?.name;
             if (bucketStatus === PhaseType.ERROR) {
-              bucketClassErrorList.push(bucketClassName);
+              errorList.push(bucketClassName);
             } else if (bucketStatus === PhaseType.PROCESSING) {
-              bucketClassProcessingList.push(bucketClassName);
+              processingList.push(bucketClassName);
             }
             bucketMap[bucketStatus] = bucketMap[bucketStatus] + 1 || 1;
             return bucketMap;
           }, {})
-        : {},
-    [
-      buckets,
-      bucketsLoaded,
-      bucketsError,
-      bucketClassErrorList,
-      bucketClassProcessingList,
-    ]
-  );
+        : {};
+    return {
+      statusMap,
+      errorList,
+      processingList,
+    };
+  }, [buckets, bucketsLoaded, bucketsError]);
 
-  const dataResourceStatusMap: { [key: string]: number } = React.useMemo(
-    () =>
+  const {
+    statusMap: dataResourceStatusMap,
+    errorList: dataResourceErrorList,
+    processingList: dataResourceProcessingList,
+  } = React.useMemo((): displayItems => {
+    const errorList = [];
+    const processingList = [];
+    const statusMap =
       dataResourcesLoaded && !dataResourcesError
         ? dataResources?.reduce((drMap, dr) => {
             const dataResourceStatus =
               NamespaceStorePhaseMap[dr?.status?.phase];
             const dataResourceName = dr?.metadata?.name;
             if (dataResourceStatus === PhaseType.ERROR) {
-              dataResourceErrorList.push(dataResourceName);
+              errorList.push(dataResourceName);
             } else if (dataResourceStatus === PhaseType.PROCESSING) {
-              dataResourceProcessingList.push(dataResourceName);
+              processingList.push(dataResourceName);
             }
             drMap[dataResourceStatus] = drMap[dataResourceStatus] + 1 || 1;
             return drMap;
           }, {})
-        : {},
-    [
-      dataResources,
-      dataResourcesLoaded,
-      dataResourcesError,
-      dataResourceErrorList,
-      dataResourceProcessingList,
-    ]
-  );
+        : {};
+    return {
+      statusMap,
+      errorList,
+      processingList,
+    };
+  }, [dataResources, dataResourcesLoaded, dataResourcesError]);
 
-  const obClaimsStatusMap: { [key: string]: number } = React.useMemo(
-    () =>
+  const {
+    statusMap: obClaimsStatusMap,
+    errorList: obcErrorList,
+    processingList: obcProcessingList,
+  } = React.useMemo((): displayItems => {
+    const errorList = [];
+    const processingList = [];
+    const statusMap =
       obcLoaded && !obcError
         ? obc?.reduce((obcMap, obc) => {
             const obClaimsStatus =
@@ -146,16 +159,21 @@ export const InventoryCard: React.FC = () => {
               ns: obc?.metadata?.namespace,
             };
             if (obClaimsStatus === PhaseType.ERROR) {
-              obcErrorList.push(obcResource);
+              errorList.push(obcResource);
             } else if (obClaimsStatus === PhaseType.PROCESSING) {
-              obcProcessingList.push(obcResource);
+              processingList.push(obcResource);
             }
             obcMap[obClaimsStatus] = obcMap[obClaimsStatus] + 1 || 1;
             return obcMap;
           }, {} as { [key: string]: number })
-        : {},
-    [obc, obcLoaded, obcError, obcErrorList, obcProcessingList]
-  );
+        : {};
+
+    return {
+      statusMap,
+      errorList,
+      processingList,
+    };
+  }, [obc, obcLoaded, obcError]);
 
   const OBC_LIST_PATH =
     '/k8s/all-namespaces/' + referenceForModel(NooBaaObjectBucketClaimModel);
@@ -193,7 +211,7 @@ export const InventoryCard: React.FC = () => {
                       />
                       <BucketClassPopOver
                         label={String(bucketStatusMap[PhaseType.ERROR])}
-                        bucketClasses={bucketClassErrorList}
+                        bucketClasses={bucketClassErrorList as string[]}
                         headerContent={getHeaderHTMLElement(
                           PhaseType.ERROR,
                           t('Buckets: Error')
@@ -209,7 +227,7 @@ export const InventoryCard: React.FC = () => {
                       />
                       <BucketClassPopOver
                         label={String(bucketStatusMap[PhaseType.PROCESSING])}
-                        bucketClasses={bucketClassProcessingList}
+                        bucketClasses={bucketClassProcessingList as string[]}
                         headerContent={getHeaderHTMLElement(
                           PhaseType.PROCESSING,
                           t('Buckets: Processing')
@@ -242,7 +260,7 @@ export const InventoryCard: React.FC = () => {
                         />
                         <DataResourcesPopOver
                           label={String(dataResourceStatusMap[PhaseType.ERROR])}
-                          dataResources={dataResourceErrorList}
+                          dataResources={dataResourceErrorList as string[]}
                           headerContent={getHeaderHTMLElement(
                             PhaseType.ERROR,
                             t('Data sources: Error')
@@ -262,7 +280,7 @@ export const InventoryCard: React.FC = () => {
                           label={String(
                             dataResourceStatusMap[PhaseType.PROCESSING]
                           )}
-                          dataResources={dataResourceProcessingList}
+                          dataResources={dataResourceProcessingList as string[]}
                           headerContent={getHeaderHTMLElement(
                             PhaseType.PROCESSING,
                             t('Data sources: Processing')
@@ -293,7 +311,7 @@ export const InventoryCard: React.FC = () => {
                       />
                       <OBCPopOver
                         label={String(obClaimsStatusMap[PhaseType.ERROR])}
-                        obcDetails={obcErrorList}
+                        obcDetails={obcErrorList as obcType[]}
                         headerContent={getHeaderHTMLElement(
                           PhaseType.ERROR,
                           t('ObjectBucketClaims: Error')
@@ -312,7 +330,7 @@ export const InventoryCard: React.FC = () => {
                           label={String(
                             obClaimsStatusMap[PhaseType.PROCESSING]
                           )}
-                          obcDetails={obcProcessingList}
+                          obcDetails={obcProcessingList as obcType[]}
                           headerContent={getHeaderHTMLElement(
                             PhaseType.PROCESSING,
                             t('ObjectBucketClaims: Processing')
