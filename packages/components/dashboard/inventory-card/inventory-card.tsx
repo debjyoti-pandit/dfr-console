@@ -237,7 +237,7 @@ export const InventoryCard: React.FC = () => {
                   )}
                 </>
               ) : (
-                <Skeleton screenreaderText="Loading buckets" />
+                <Skeleton screenreaderText={t('Loading buckets')} />
               )}
             </GalleryItem>
             <GalleryItem className="inventory-card-item">
@@ -290,7 +290,7 @@ export const InventoryCard: React.FC = () => {
                     )}
                 </>
               ) : (
-                <Skeleton screenreaderText="Loading data resources" />
+                <Skeleton screenreaderText={t('Loading data resources')} />
               )}
             </GalleryItem>
             <GalleryItem className="inventory-card-item">
@@ -340,7 +340,9 @@ export const InventoryCard: React.FC = () => {
                     )}
                 </>
               ) : (
-                <Skeleton screenreaderText="Loading object bucket claims" />
+                <Skeleton
+                  screenreaderText={t('Loading object bucket claims')}
+                />
               )}
             </GalleryItem>
           </Gallery>
