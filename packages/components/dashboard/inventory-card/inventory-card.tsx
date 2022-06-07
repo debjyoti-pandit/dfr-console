@@ -152,6 +152,7 @@ const getBucketPopup = (
           type: type,
         })
       )}
+      trimContent
     />
   );
 };
@@ -172,6 +173,7 @@ const getDataResourcePopup = (
           type: type,
         })
       )}
+      trimContent
     />
   );
 };
@@ -187,6 +189,7 @@ const getOBCPopup = (t, type: PhaseType, statusmap, data): React.ReactNode => {
           type: type,
         })
       )}
+      trimContent
     />
   );
 };

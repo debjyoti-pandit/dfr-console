@@ -49,6 +49,7 @@ export const BucketClassPopOver: React.FC<BucketClassPopOverProps> = ({
   label,
   bucketClasses,
   headerContent,
+  trimContent = false,
 }) => {
   const { t } = useTranslation();
 
@@ -59,7 +60,7 @@ export const BucketClassPopOver: React.FC<BucketClassPopOverProps> = ({
       title={t('Connected data sources')}
     >
       <div className="resource-pop-over">
-        {(bucketClasses?.length > MAX_NO_OF_RESOURCE_DISPLAY
+        {(trimContent && bucketClasses?.length > MAX_NO_OF_RESOURCE_DISPLAY
           ? bucketClasses.slice(0, MAX_NO_OF_RESOURCE_DISPLAY)
           : bucketClasses
         )?.map((resourceName) => (
@@ -74,7 +75,7 @@ export const BucketClassPopOver: React.FC<BucketClassPopOverProps> = ({
           />
         ))}
       </div>
-      {bucketClasses.length > MAX_NO_OF_RESOURCE_DISPLAY && (
+      {trimContent && bucketClasses.length > MAX_NO_OF_RESOURCE_DISPLAY && (
         <>
           <Divider />
           <div className="view-more-popup">
@@ -90,6 +91,7 @@ export const DataResourcesPopOver: React.FC<DataResourcesPopOverProps> = ({
   label,
   dataResources,
   headerContent,
+  trimContent,
 }) => {
   const { t } = useTranslation();
 
@@ -100,7 +102,7 @@ export const DataResourcesPopOver: React.FC<DataResourcesPopOverProps> = ({
       title={t('Connected data sources')}
     >
       <div className="resource-pop-over">
-        {(dataResources?.length > MAX_NO_OF_RESOURCE_DISPLAY
+        {(trimContent && dataResources?.length > MAX_NO_OF_RESOURCE_DISPLAY
           ? dataResources.slice(0, MAX_NO_OF_RESOURCE_DISPLAY)
           : dataResources
         )?.map((resourceName) => (
@@ -115,7 +117,7 @@ export const DataResourcesPopOver: React.FC<DataResourcesPopOverProps> = ({
           />
         ))}
       </div>
-      {dataResources.length > MAX_NO_OF_RESOURCE_DISPLAY && (
+      {trimContent && dataResources.length > MAX_NO_OF_RESOURCE_DISPLAY && (
         <>
           <Divider />
           <div className="view-more-popup">
@@ -131,6 +133,7 @@ export const OBCPopOver: React.FC<OBCPopOverProps> = ({
   label,
   obcDetails,
   headerContent,
+  trimContent,
 }) => {
   const { t } = useTranslation();
 
@@ -141,7 +144,7 @@ export const OBCPopOver: React.FC<OBCPopOverProps> = ({
       title={t('Connected ObjectBucketClaims')}
     >
       <div className="resource-pop-over">
-        {(obcDetails?.length > MAX_NO_OF_RESOURCE_DISPLAY
+        {(trimContent && obcDetails?.length > MAX_NO_OF_RESOURCE_DISPLAY
           ? obcDetails.slice(0, MAX_NO_OF_RESOURCE_DISPLAY)
           : obcDetails
         )?.map((obcObj) => (
@@ -156,7 +159,7 @@ export const OBCPopOver: React.FC<OBCPopOverProps> = ({
           />
         ))}
       </div>
-      {obcDetails.length > MAX_NO_OF_RESOURCE_DISPLAY && (
+      {trimContent && obcDetails.length > MAX_NO_OF_RESOURCE_DISPLAY && (
         <>
           <Divider />
           <div className="view-more-popup">
@@ -180,12 +183,14 @@ type BucketClassPopOverProps = {
   label: string;
   bucketClasses: string[];
   headerContent?: React.ReactNode;
+  trimContent?: boolean;
 };
 
 type DataResourcesPopOverProps = {
   label: string;
   dataResources: string[];
   headerContent?: React.ReactNode;
+  trimContent?: boolean;
 };
 
 type OBCPopOverProps = {
@@ -195,4 +200,5 @@ type OBCPopOverProps = {
     ns: string;
   }[];
   headerContent?: React.ReactNode;
+  trimContent?: boolean;
 };
