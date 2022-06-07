@@ -41,7 +41,10 @@ export const StatusCard: React.FC = () => {
       </CardHeader>
       <CardBody>
         <HealthBody>
-          <Gallery className="co-overview-status__health" hasGutter>
+          <Gallery
+            className="co-overview-status__health status-card-body"
+            hasGutter
+          >
             <GalleryItem>
               <HealthItem
                 title={t('Data Federation service')}

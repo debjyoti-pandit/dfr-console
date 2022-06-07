@@ -8,6 +8,7 @@ import { DFRMock } from '../../models';
 import PageHeading from '../../utils/heading/page-heading';
 import ActivityCard from './activity-card/activity-card';
 import { DetailsCard } from './details-card/details-card';
+import { InventoryCard } from './inventory-card/inventory-card';
 import { ResourceProvidersCard } from './resource-providers-card/resource-providers-card';
 import { StatusCard } from './status-card/status-card';
 import './dashboard.scss';
@@ -26,6 +27,9 @@ const UpperSection: React.FC = () => (
     </GridItem>
     <GridItem md={8} sm={12}>
       <DetailsCard />
+    </GridItem>
+    <GridItem md={8} sm={12}>
+      <InventoryCard />
     </GridItem>
     <GridItem md={8} sm={12}>
       <ResourceProvidersCard />
