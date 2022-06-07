@@ -46,6 +46,13 @@ import {
 } from '../../resources';
 import './inventory-card.scss';
 
+const OBC_LIST_PATH =
+  '/k8s/all-namespaces/' + referenceForModel(NooBaaObjectBucketClaimModel);
+const BUCKET_CLASS_LIST_PATH =
+  '/mcgms/cluster/resource/' + referenceForModel(NooBaaBucketClassModel);
+const DATA_RESOURCE_LIST_PATH =
+  '/mcgms/cluster/resource/' + referenceForModel(NooBaaNamespaceStoreModel);
+
 type obcType = { name: string; ns: string };
 type displayItems = {
   statusMap: { [key: string]: number };
@@ -74,6 +81,114 @@ const getHeaderHTMLElement = (
     );
   }
   return <></>;
+};
+
+const getGalleryItem = (
+  t,
+  listItems,
+  listLoaded: boolean,
+  listError,
+  redirectPath: string,
+  resource: string,
+  statusMap,
+  errorPopup: React.ReactNode,
+  processingPopup: React.ReactNode
+): React.ReactNode => {
+  return (
+    <GalleryItem className="inventory-card-item">
+      {listLoaded && !listError ? (
+        <>
+          <div className="inventory-card-sub-item">
+            <Link to={redirectPath}>
+              {t('{{count}} {{resourceType}}', {
+                count: listItems.length,
+                resourceType: resource,
+              })}
+            </Link>
+          </div>
+          {statusMap && statusMap[PhaseType.ERROR] && (
+            <div className="icons-container">
+              <RedExclamationCircleIcon
+                title={PhaseType.ERROR}
+                className="icons"
+              />
+              {errorPopup}
+            </div>
+          )}
+          {statusMap && statusMap[PhaseType.PROCESSING] && (
+            <div>
+              <BlueInProgressIcon
+                title={PhaseType.PROCESSING}
+                className="icons"
+              />
+              {processingPopup}
+            </div>
+          )}
+        </>
+      ) : (
+        <Skeleton
+          screenreaderText={t('Loading {{resourceType}}', {
+            resourceType: resource,
+          })}
+        />
+      )}
+    </GalleryItem>
+  );
+};
+
+const getBucketPopup = (
+  t,
+  type: PhaseType,
+  statusmap,
+  data
+): React.ReactNode => {
+  return (
+    <BucketClassPopOver
+      label={String(statusmap[type])}
+      bucketClasses={data as string[]}
+      headerContent={getHeaderHTMLElement(
+        type,
+        t('Buckets: {{type}}', {
+          type: type,
+        })
+      )}
+    />
+  );
+};
+
+const getDataResourcePopup = (
+  t,
+  type: PhaseType,
+  statusmap,
+  data
+): React.ReactNode => {
+  return (
+    <DataResourcesPopOver
+      label={String(statusmap[type])}
+      dataResources={data as string[]}
+      headerContent={getHeaderHTMLElement(
+        type,
+        t('Data sources: {{type}}', {
+          type: type,
+        })
+      )}
+    />
+  );
+};
+
+const getOBCPopup = (t, type: PhaseType, statusmap, data): React.ReactNode => {
+  return (
+    <OBCPopOver
+      label={String(statusmap[type])}
+      obcDetails={data as obcType[]}
+      headerContent={getHeaderHTMLElement(
+        type,
+        t('ObjectBucketClaims: {{type}}', {
+          type: type,
+        })
+      )}
+    />
+  );
 };
 
 export const InventoryCard: React.FC = () => {
@@ -175,13 +290,6 @@ export const InventoryCard: React.FC = () => {
     };
   }, [obc, obcLoaded, obcError]);
 
-  const OBC_LIST_PATH =
-    '/k8s/all-namespaces/' + referenceForModel(NooBaaObjectBucketClaimModel);
-  const BUCKET_CLASS_LIST_PATH =
-    '/mcgms/cluster/resource/' + referenceForModel(NooBaaBucketClassModel);
-  const DATA_RESOURCE_LIST_PATH =
-    '/mcgms/cluster/resource/' + referenceForModel(NooBaaNamespaceStoreModel);
-
   return (
     <Card>
       <CardHeader>
@@ -193,158 +301,64 @@ export const InventoryCard: React.FC = () => {
             className="co-overview-status__health inventory-card-body"
             hasGutter
           >
-            <GalleryItem className="inventory-card-item">
-              {bucketsLoaded && !bucketsError ? (
-                <>
-                  <div className="inventory-card-sub-item">
-                    <Link to={BUCKET_CLASS_LIST_PATH}>
-                      {t('{{bucketCount}} Buckets', {
-                        bucketCount: buckets.length,
-                      })}
-                    </Link>
-                  </div>
-                  {bucketStatusMap && bucketStatusMap[PhaseType.ERROR] && (
-                    <div className="icons-container">
-                      <RedExclamationCircleIcon
-                        title={PhaseType.ERROR}
-                        className="icons"
-                      />
-                      <BucketClassPopOver
-                        label={String(bucketStatusMap[PhaseType.ERROR])}
-                        bucketClasses={bucketClassErrorList as string[]}
-                        headerContent={getHeaderHTMLElement(
-                          PhaseType.ERROR,
-                          t('Buckets: Error')
-                        )}
-                      />
-                    </div>
-                  )}
-                  {bucketStatusMap && bucketStatusMap[PhaseType.PROCESSING] && (
-                    <div>
-                      <BlueInProgressIcon
-                        title={PhaseType.PROCESSING}
-                        className="icons"
-                      />
-                      <BucketClassPopOver
-                        label={String(bucketStatusMap[PhaseType.PROCESSING])}
-                        bucketClasses={bucketClassProcessingList as string[]}
-                        headerContent={getHeaderHTMLElement(
-                          PhaseType.PROCESSING,
-                          t('Buckets: Processing')
-                        )}
-                      />
-                    </div>
-                  )}
-                </>
-              ) : (
-                <Skeleton screenreaderText={t('Loading buckets')} />
-              )}
-            </GalleryItem>
-            <GalleryItem className="inventory-card-item">
-              {dataResourcesLoaded && !dataResourcesError ? (
-                <>
-                  <div className="inventory-card-sub-item">
-                    <Link to={DATA_RESOURCE_LIST_PATH}>
-                      {t('{{dataResourcesCount}} Data sources', {
-                        dataResourcesCount: dataResources.length,
-                      })}
-                    </Link>
-                  </div>
-                  {dataResourcesLoaded &&
-                    dataResourceStatusMap &&
-                    dataResourceStatusMap[PhaseType.ERROR] && (
-                      <div className="icons-container">
-                        <RedExclamationCircleIcon
-                          title={PhaseType.ERROR}
-                          className="icons"
-                        />
-                        <DataResourcesPopOver
-                          label={String(dataResourceStatusMap[PhaseType.ERROR])}
-                          dataResources={dataResourceErrorList as string[]}
-                          headerContent={getHeaderHTMLElement(
-                            PhaseType.ERROR,
-                            t('Data sources: Error')
-                          )}
-                        />
-                      </div>
-                    )}
-                  {dataResourcesLoaded &&
-                    dataResourceStatusMap &&
-                    dataResourceStatusMap[PhaseType.PROCESSING] && (
-                      <div>
-                        <BlueInProgressIcon
-                          title={PhaseType.PROCESSING}
-                          className="icons"
-                        />
-                        <DataResourcesPopOver
-                          label={String(
-                            dataResourceStatusMap[PhaseType.PROCESSING]
-                          )}
-                          dataResources={dataResourceProcessingList as string[]}
-                          headerContent={getHeaderHTMLElement(
-                            PhaseType.PROCESSING,
-                            t('Data sources: Processing')
-                          )}
-                        />
-                      </div>
-                    )}
-                </>
-              ) : (
-                <Skeleton screenreaderText={t('Loading data resources')} />
-              )}
-            </GalleryItem>
-            <GalleryItem className="inventory-card-item">
-              {obcLoaded && !obcError ? (
-                <>
-                  <div className="inventory-card-sub-item">
-                    <Link to={OBC_LIST_PATH}>
-                      {t('{{obcCount}} Object bucket claims', {
-                        obcCount: obc.length,
-                      })}
-                    </Link>
-                  </div>
-                  {obClaimsStatusMap && obClaimsStatusMap[PhaseType.ERROR] && (
-                    <div className="icons-container">
-                      <RedExclamationCircleIcon
-                        title={PhaseType.ERROR}
-                        className="icons"
-                      />
-                      <OBCPopOver
-                        label={String(obClaimsStatusMap[PhaseType.ERROR])}
-                        obcDetails={obcErrorList as obcType[]}
-                        headerContent={getHeaderHTMLElement(
-                          PhaseType.ERROR,
-                          t('ObjectBucketClaims: Error')
-                        )}
-                      />
-                    </div>
-                  )}
-                  {obClaimsStatusMap &&
-                    obClaimsStatusMap[PhaseType.PROCESSING] && (
-                      <div>
-                        <BlueInProgressIcon
-                          title={PhaseType.PROCESSING}
-                          className="icons"
-                        />
-                        <OBCPopOver
-                          label={String(
-                            obClaimsStatusMap[PhaseType.PROCESSING]
-                          )}
-                          obcDetails={obcProcessingList as obcType[]}
-                          headerContent={getHeaderHTMLElement(
-                            PhaseType.PROCESSING,
-                            t('ObjectBucketClaims: Processing')
-                          )}
-                        />
-                      </div>
-                    )}
-                </>
-              ) : (
-                <Skeleton
-                  screenreaderText={t('Loading object bucket claims')}
-                />
-              )}
-            </GalleryItem>
+            {getGalleryItem(
+              t,
+              buckets,
+              bucketsLoaded,
+              bucketsError,
+              BUCKET_CLASS_LIST_PATH,
+              t('Buckets'),
+              bucketStatusMap,
+              getBucketPopup(
+                t,
+                PhaseType.ERROR,
+                bucketStatusMap,
+                bucketClassErrorList
+              ),
+              getBucketPopup(
+                t,
+                PhaseType.PROCESSING,
+                bucketStatusMap,
+                bucketClassProcessingList
+              )
+            )}
+            {getGalleryItem(
+              t,
+              dataResources,
+              dataResourcesLoaded,
+              dataResourcesError,
+              DATA_RESOURCE_LIST_PATH,
+              t('Data sources'),
+              dataResourceStatusMap,
+              getDataResourcePopup(
+                t,
+                PhaseType.ERROR,
+                dataResourceStatusMap,
+                dataResourceErrorList
+              ),
+              getDataResourcePopup(
+                t,
+                PhaseType.PROCESSING,
+                dataResourceStatusMap,
+                dataResourceProcessingList
+              )
+            )}
+            {getGalleryItem(
+              t,
+              obc,
+              obcLoaded,
+              obcError,
+              OBC_LIST_PATH,
+              t('ObjectBucketClaims'),
+              obClaimsStatusMap,
+              getOBCPopup(t, PhaseType.ERROR, obClaimsStatusMap, obcErrorList),
+              getOBCPopup(
+                t,
+                PhaseType.PROCESSING,
+                obClaimsStatusMap,
+                obcProcessingList
+              )
+            )}
           </Gallery>
         </HealthBody>
       </CardBody>
