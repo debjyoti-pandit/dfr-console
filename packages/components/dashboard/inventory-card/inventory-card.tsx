@@ -60,6 +60,23 @@ type displayItems = {
   processingList: string[] | obcType[];
 };
 
+type PopupProps = {
+  type: PhaseType;
+  statusmap: { [key: string]: number };
+  data: string[] | obcType[];
+};
+
+type CustomGalleryItemProps = {
+  listItems;
+  listLoaded: boolean;
+  listError;
+  redirectPath: string;
+  resource: string;
+  statusMap: { [key: string]: number };
+  errorPopup: React.ReactNode;
+  processingPopup: React.ReactNode;
+};
+
 const getHeaderHTMLElement = (
   popUpType: PhaseType,
   headerText: string
@@ -83,17 +100,17 @@ const getHeaderHTMLElement = (
   return <></>;
 };
 
-const getGalleryItem = (
-  t,
+const CustomGalleryItem: React.FC<CustomGalleryItemProps> = ({
   listItems,
-  listLoaded: boolean,
+  listLoaded,
   listError,
-  redirectPath: string,
-  resource: string,
+  redirectPath,
+  resource,
   statusMap,
-  errorPopup: React.ReactNode,
-  processingPopup: React.ReactNode
-): React.ReactNode => {
+  errorPopup,
+  processingPopup,
+}) => {
+  const { t } = useTranslation();
   return (
     <GalleryItem className="inventory-card-item">
       {listLoaded && !listError ? (
@@ -136,12 +153,8 @@ const getGalleryItem = (
   );
 };
 
-const getBucketPopup = (
-  t,
-  type: PhaseType,
-  statusmap,
-  data
-): React.ReactNode => {
+const BucketPopup: React.FC<PopupProps> = ({ type, statusmap, data }) => {
+  const { t } = useTranslation();
   return (
     <BucketClassPopOver
       label={String(statusmap[type])}
@@ -157,12 +170,8 @@ const getBucketPopup = (
   );
 };
 
-const getDataResourcePopup = (
-  t,
-  type: PhaseType,
-  statusmap,
-  data
-): React.ReactNode => {
+const DataResourcePopup: React.FC<PopupProps> = ({ type, statusmap, data }) => {
+  const { t } = useTranslation();
   return (
     <DataResourcesPopOver
       label={String(statusmap[type])}
@@ -178,7 +187,8 @@ const getDataResourcePopup = (
   );
 };
 
-const getOBCPopup = (t, type: PhaseType, statusmap, data): React.ReactNode => {
+const OBCPopup: React.FC<PopupProps> = ({ type, statusmap, data }) => {
+  const { t } = useTranslation();
   return (
     <OBCPopOver
       label={String(statusmap[type])}
@@ -304,64 +314,72 @@ export const InventoryCard: React.FC = () => {
             className="co-overview-status__health inventory-card-body"
             hasGutter
           >
-            {getGalleryItem(
-              t,
-              buckets,
-              bucketsLoaded,
-              bucketsError,
-              BUCKET_CLASS_LIST_PATH,
-              t('Buckets'),
-              bucketStatusMap,
-              getBucketPopup(
-                t,
-                PhaseType.ERROR,
-                bucketStatusMap,
-                bucketClassErrorList
-              ),
-              getBucketPopup(
-                t,
-                PhaseType.PROCESSING,
-                bucketStatusMap,
-                bucketClassProcessingList
-              )
-            )}
-            {getGalleryItem(
-              t,
-              dataResources,
-              dataResourcesLoaded,
-              dataResourcesError,
-              DATA_RESOURCE_LIST_PATH,
-              t('Data sources'),
-              dataResourceStatusMap,
-              getDataResourcePopup(
-                t,
-                PhaseType.ERROR,
-                dataResourceStatusMap,
-                dataResourceErrorList
-              ),
-              getDataResourcePopup(
-                t,
-                PhaseType.PROCESSING,
-                dataResourceStatusMap,
-                dataResourceProcessingList
-              )
-            )}
-            {getGalleryItem(
-              t,
-              obc,
-              obcLoaded,
-              obcError,
-              OBC_LIST_PATH,
-              t('ObjectBucketClaims'),
-              obClaimsStatusMap,
-              getOBCPopup(t, PhaseType.ERROR, obClaimsStatusMap, obcErrorList),
-              getOBCPopup(
-                t,
-                PhaseType.PROCESSING,
-                obClaimsStatusMap,
-                obcProcessingList
-              )
-            )}
+            <CustomGalleryItem
+              listItems={buckets}
+              listLoaded={bucketsLoaded}
+              listError={bucketsError}
+              redirectPath={BUCKET_CLASS_LIST_PATH}
+              resource={t('Buckets')}
+              statusMap={bucketStatusMap}
+              errorPopup={
+                <BucketPopup
+                  type={PhaseType.ERROR}
+                  statusmap={bucketStatusMap}
+                  data={bucketClassErrorList}
+                />
+              }
+              processingPopup={
+                <BucketPopup
+                  type={PhaseType.PROCESSING}
+                  statusmap={bucketStatusMap}
+                  data={bucketClassProcessingList}
+                />
+              }
+            />
+            <CustomGalleryItem
+              listItems={dataResources}
+              listLoaded={dataResourcesLoaded}
+              listError={dataResourcesError}
+              redirectPath={DATA_RESOURCE_LIST_PATH}
+              resource={t('Data sources')}
+              statusMap={dataResourceStatusMap}
+              errorPopup={
+                <DataResourcePopup
+                  type={PhaseType.ERROR}
+                  statusmap={dataResourceStatusMap}
+                  data={dataResourceErrorList}
+                />
+              }
+              processingPopup={
+                <DataResourcePopup
+                  type={PhaseType.PROCESSING}
+                  statusmap={dataResourceStatusMap}
+                  data={dataResourceProcessingList}
+                />
+              }
+            />
+            <CustomGalleryItem
+              listItems={obc}
+              listLoaded={obcLoaded}
+              listError={obcError}
+              redirectPath={OBC_LIST_PATH}
+              resource={t('ObjectBucketClaims')}
+              statusMap={obClaimsStatusMap}
+              errorPopup={
+                <OBCPopup
+                  type={PhaseType.ERROR}
+                  statusmap={obClaimsStatusMap}
+                  data={obcErrorList}
+                />
+              }
+              processingPopup={
+                <OBCPopup
+                  type={PhaseType.PROCESSING}
+                  statusmap={obClaimsStatusMap}
+                  data={obcProcessingList}
+                />
+              }
+            />
           </Gallery>
         </HealthBody>
       </CardBody>
