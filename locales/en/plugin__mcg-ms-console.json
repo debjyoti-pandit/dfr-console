@@ -26,6 +26,8 @@
   "Select a single data source that defines the write targets of the bucket policy": "Select a single data source that defines the write targets of the bucket policy",
   "Data Federation": "Data Federation",
   "Overview": "Overview",
+  "Resources Providers": "Resources Providers",
+  "Loading resource providers": "Loading resource providers",
   "Status": "Status",
   "Data Federation service": "Data Federation service",
   "Create new data source": "Create new data source",

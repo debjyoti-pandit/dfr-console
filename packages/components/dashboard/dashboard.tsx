@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router';
 import { Grid, GridItem } from '@patternfly/react-core';
 import { DFRMock } from '../../models';
 import PageHeading from '../../utils/heading/page-heading';
+import { ResourceProviderCard } from './resource-provider-card/resource-provider-card';
 import { StatusCard } from './status-card/status-card';
 import './dashboard.scss';
 
@@ -17,6 +18,9 @@ const UpperSection: React.FC = () => (
   <Grid hasGutter>
     <GridItem md={8} sm={12}>
       <StatusCard />
+    </GridItem>
+    <GridItem md={8} sm={12}>
+      <ResourceProviderCard />
     </GridItem>
   </Grid>
 );
