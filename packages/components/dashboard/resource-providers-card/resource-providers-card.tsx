@@ -79,6 +79,12 @@ const ResourceProviders: React.FC<{}> = () => {
   );
 
   const providerTypes = filterProviders(allProviders);
+  console.log(error);
+  console.log(noobaaResourcesLink);
+  console.log(allProviders);
+  console.log(unhealthyProviders);
+  console.log('hasprovider: ', !_.isEmpty(allProviders));
+  console.log(providerTypes);
 
   return (
     <Card>
@@ -94,15 +100,18 @@ const ResourceProviders: React.FC<{}> = () => {
           hasProviders={!_.isEmpty(allProviders)}
           error={error}
         >
-          {providerTypes.map((provider) => (
-            <ResourceProvidersItem
-              count={allProviders[provider]}
-              key={provider}
-              link={noobaaResourcesLink}
-              title={provider}
-              unhealthyProviders={unhealthyProviders}
-            />
-          ))}
+          {providerTypes.map((provider) => {
+            console.log(provider);
+            return (
+              <ResourceProvidersItem
+                count={allProviders[provider]}
+                key={provider}
+                link={noobaaResourcesLink}
+                title={provider}
+                unhealthyProviders={unhealthyProviders}
+              />
+            );
+          })}
         </ResourceProvidersBody>
       </CardBody>
     </Card>
