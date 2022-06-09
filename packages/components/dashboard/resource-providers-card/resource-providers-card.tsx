@@ -86,17 +86,17 @@ const ResourceProviders: React.FC<{}> = () => {
     !error &&
     !(providersTypesQueryResult && unhealthyProvidersTypesQueryResult);
 
-  console.log("*****************************************************");
-  console.log("isLoading", isLoading);
-  console.log("error", error);
-  console.log("hasProviders", hasProviders);
+  console.log('*****************************************************');
+  console.log('isLoading', isLoading);
+  console.log('error', error);
+  console.log('hasProviders', hasProviders);
   console.log(providerTypes);
   console.log(providersTypesQueryResult);
   console.log(unhealthyProvidersTypesQueryResult);
-  console.log("noobaaResourcesLink", noobaaResourcesLink);
+  console.log('noobaaResourcesLink', noobaaResourcesLink);
   console.log(allProviders);
   console.log(unhealthyProviders);
-  console.log("*****************************************************");
+  console.log('*****************************************************');
   return (
     <Card>
       <CardHeader>
