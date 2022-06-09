@@ -2,11 +2,18 @@ import * as React from 'react';
 import { PrometheusResponse } from '@openshift-console/dynamic-plugin-sdk';
 import * as _ from 'lodash';
 import { useTranslation } from 'react-i18next';
-import { Card, CardBody, CardHeader, CardTitle } from '@patternfly/react-core';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  CardTitle,
+  Gallery,
+  GalleryItem,
+  Skeleton,
+} from '@patternfly/react-core';
 import { MCG_MS_PROMETHEUS_URL } from '../../../constants';
 import { getMetric } from '../../../utils';
 import { useCustomPrometheusPoll } from '../../../utils/hooks/custom-prometheus-poll';
-import { ResourceProvidersBody } from './resource-providers-card-body';
 import {
   ResourceProvidersItem,
   ProviderType,
@@ -47,8 +54,6 @@ const ResourceProviders: React.FC<{}> = () => {
       endpoint: 'api/v1/query' as any,
       basePath: MCG_MS_PROMETHEUS_URL,
     });
-  console.log('***********************************************************');
-  console.log(providersTypesQueryResult);
   const [
     unhealthyProvidersTypesQueryResult,
     unhealthyProvidersTypesQueryResultError,
@@ -57,15 +62,12 @@ const ResourceProviders: React.FC<{}> = () => {
     endpoint: 'api/v1/query' as any,
     basePath: MCG_MS_PROMETHEUS_URL,
   });
-  console.log(unhealthyProvidersTypesQueryResult);
   const [resourcesLinksResponse, resourcesLinksResponseError] =
     useCustomPrometheusPoll({
       query: RESOURCE_PROVIDERS_QUERY.RESOURCES_LINK_QUERY,
       endpoint: 'api/v1/query' as any,
       basePath: MCG_MS_PROMETHEUS_URL,
     });
-  console.log(resourcesLinksResponse);
-  console.log('***********************************************************');
   const error =
     !!providersTypesQueryResultError ||
     !!unhealthyProvidersTypesQueryResultError ||
@@ -79,40 +81,39 @@ const ResourceProviders: React.FC<{}> = () => {
   );
 
   const providerTypes = filterProviders(allProviders);
-  console.log(error);
-  console.log(noobaaResourcesLink);
-  console.log(allProviders);
-  console.log(unhealthyProviders);
-  console.log('hasprovider: ', !_.isEmpty(allProviders));
-  console.log(providerTypes);
-
+  const hasProviders = !_.isEmpty(allProviders);
+  const isLoading =
+    !error &&
+    !(providersTypesQueryResult && unhealthyProvidersTypesQueryResult);
   return (
     <Card>
       <CardHeader>
         <CardTitle>{t('Resource Providers')}</CardTitle>
       </CardHeader>
       <CardBody>
-        <ResourceProvidersBody
-          isLoading={
-            !error &&
-            !(providersTypesQueryResult && unhealthyProvidersTypesQueryResult)
-          }
-          hasProviders={!_.isEmpty(allProviders)}
-          error={error}
-        >
-          {providerTypes.map((provider) => {
-            console.log(provider);
-            return (
-              <ResourceProvidersItem
-                count={allProviders[provider]}
-                key={provider}
-                link={noobaaResourcesLink}
-                title={provider}
-                unhealthyProviders={unhealthyProviders}
-              />
-            );
-          })}
-        </ResourceProvidersBody>
+        {isLoading ? (
+          <Skeleton />
+        ) : error || hasProviders ? (
+          <div className="nb-resource-providers-card__not-available text-secondary">
+            {t('Not available')}
+          </div>
+        ) : (
+          <Gallery hasGutter>
+            {providerTypes.map((provider) => {
+              return (
+                <GalleryItem key={provider}>
+                  <ResourceProvidersItem
+                    count={allProviders[provider]}
+                    key={provider}
+                    link={noobaaResourcesLink}
+                    title={provider}
+                    unhealthyProviders={unhealthyProviders}
+                  />
+                </GalleryItem>
+              );
+            })}
+          </Gallery>
+        )}
       </CardBody>
     </Card>
   );
