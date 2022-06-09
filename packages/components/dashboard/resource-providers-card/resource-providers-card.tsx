@@ -85,6 +85,18 @@ const ResourceProviders: React.FC<{}> = () => {
   const isLoading =
     !error &&
     !(providersTypesQueryResult && unhealthyProvidersTypesQueryResult);
+
+  console.log("*****************************************************");
+  console.log("isLoading", isLoading);
+  console.log("error", error);
+  console.log("hasProviders", hasProviders);
+  console.log(providerTypes);
+  console.log(providersTypesQueryResult);
+  console.log(unhealthyProvidersTypesQueryResult);
+  console.log("noobaaResourcesLink", noobaaResourcesLink);
+  console.log(allProviders);
+  console.log(unhealthyProviders);
+  console.log("*****************************************************");
   return (
     <Card>
       <CardHeader>
