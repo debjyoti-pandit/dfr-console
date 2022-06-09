@@ -105,7 +105,7 @@ const ResourceProviders: React.FC<{}> = () => {
       <CardBody>
         {isLoading ? (
           <Skeleton />
-        ) : error || hasProviders ? (
+        ) : error || !hasProviders ? (
           <div className="nb-resource-providers-card__not-available text-secondary">
             {t('Not available')}
           </div>
