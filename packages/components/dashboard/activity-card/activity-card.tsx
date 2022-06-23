@@ -46,7 +46,7 @@ const OngoingActivity: React.FC = () => {
   console.log('*******************************************');
   return (
     <OngoingActivityBody
-      loaded={progressLoading || progressError}
+      loaded={!progressLoading}
       prometheusActivities={prometheusActivities}
     />
   );
