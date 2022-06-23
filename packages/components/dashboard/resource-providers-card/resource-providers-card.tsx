@@ -86,6 +86,22 @@ const ResourceProviders: React.FC<{}> = () => {
     unhealthyProvidersTypesLoading ||
     resourcesLinksLoading;
 
+  console.log('*************************************');
+  console.log(providersTypesResult);
+  console.log(providersTypesError);
+  console.log(providersTypesLoading);
+  console.log(unhealthyProvidersTypesResult);
+  console.log(unhealthyProvidersTypesError);
+  console.log(unhealthyProvidersTypesLoading);
+  console.log('*************************************');
+  console.log(error);
+  console.log(noobaaResourcesLink);
+  console.log(allProviders);
+  console.log(providerTypes);
+  console.log(hasProviders);
+  console.log(isLoading);
+  console.log('*************************************');
+
   return (
     <Card>
       <CardHeader>
