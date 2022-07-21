@@ -163,6 +163,14 @@ export const S3EndPointType: React.FC<S3EndpointTypeProps> = (props) => {
     [dispatch]
   );
 
+  console.log('********************************');
+  console.log('hasReadAccess: ', hasReadAccess);
+  console.log('hasReadAccessLoading: ', hasReadAccessLoading);
+  console.log('showSecret: ', showSecret);
+  console.log(secretNamespace, ' :secretNamespace: ', !!secretNamespace);
+  console.log(showSecret && !hasReadAccess && !!secretNamespace);
+  console.log('********************************');
+
   return (
     <>
       {provider === BC_PROVIDERS.AWS && (
@@ -226,7 +234,7 @@ export const S3EndPointType: React.FC<S3EndpointTypeProps> = (props) => {
               />
             </InputGroup>
           </FormGroup>
-          {showSecret && !hasReadAccess && (
+          {showSecret && !hasReadAccess && secretNamespace && (
             <Alert isInline variant="danger" title={t('Restricted Access')}>
               {t(
                 "You don't have access to read Secrets from {{namespace}} namespace. Please select a different namespace.",

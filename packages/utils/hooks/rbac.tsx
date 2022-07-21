@@ -55,7 +55,7 @@ export const useAccessReview = (
   resourceAttributes: AccessReviewResourceAttributes
 ): [boolean, boolean] => {
   const [loading, setLoading] = useSafetyFirst(true);
-  const [isAllowed, setAllowed] = useSafetyFirst(false);
+  const [isAllowed, setAllowed] = useSafetyFirst(true);
   // Destructure the attributes to pass them as dependencies to `useEffect`,
   // which doesn't do deep comparison of object dependencies.
   const {
@@ -67,9 +67,13 @@ export const useAccessReview = (
     namespace = '',
   } = resourceAttributes;
 
+  console.log('in use access review hook');
+  console.log(resourceAttributes);
   React.useEffect(() => {
     checkAccessInternal(group, resource, subresource, verb, name, namespace)
       .then((result: SelfSubjectAccessReviewKind) => {
+        console.log(`setting allowed ${result.status.allowed}`);
+        console.log(group, resource, subresource, verb, name, namespace);
         setAllowed(result.status.allowed);
         setLoading(false);
       })
